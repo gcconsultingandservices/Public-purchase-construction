@@ -8,36 +8,22 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 import requests
 
-import undetected_chromedriver as uc
-from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import TimeoutException
-import time
-
 # VARIABLES
 username = "manuel.madeira"
 password = "AlakaiRoofing123"
 base_url = "https://www.publicpurchase.com"
 keyword = "construction"
 
-
-def create_driver():
-    options = Options()
-    options.add_argument("--headless=new")  # newer headless mode
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    options.add_argument("--window-size=1920,1080")
-    service = Service(ChromeDriverManager().install())
-    driver = uc.Chrome(service=service, options=options)
-    return driver
-
-
 def run_script():
-    
-    driver = create_driver()
-    print("✅ ChromeDriver launched successfully", flush=True)
-    
+    # Configure Chrome options
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--disable-gpu")
+
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=chrome_options)
 
     try:
         # LOGIN
@@ -96,7 +82,7 @@ def run_script():
             }
             results.append(row_data)
 
-        # POST RESULTS to the construction N8N node
+        # POST RESULTS
         url = "https://n8n.srv988364.hstgr.cloud/webhook/e3ab4159-487e-44a8-9bd4-cfa949572f81"
         response = requests.post(url, json=results)
 
@@ -114,19 +100,3 @@ while True:
     run_script()
     print("⏰ Waiting 1 hour before next run...\n")
     time.sleep(3600)  # 1 hour = 3600 seconds
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
