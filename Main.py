@@ -8,24 +8,36 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 import requests
 
+import undetected_chromedriver as uc
+from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import TimeoutException
+import time
+
 # VARIABLES
 username = "manuel.madeira"
 password = "AlakaiRoofing123"
 base_url = "https://www.publicpurchase.com"
 keyword = "construction"
 
-def run_script():
-    # Configure Chrome options
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--window-size=1920,1080")
-    chrome_options.page_load_strategy = 'eager'  # don't wait for full page load
 
+def create_driver():
+    options = Options()
+    options.add_argument("--headless=new")  # newer headless mode
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--disable-blink-features=AutomationControlled")
+    options.add_argument("--window-size=1920,1080")
     service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=chrome_options)
+    driver = uc.Chrome(service=service, options=options)
+    return driver
+
+
+def run_script():
+    
+    driver = create_driver()
+    print("✅ ChromeDriver launched successfully", flush=True)
+    
 
     try:
         # LOGIN
