@@ -82,9 +82,17 @@ def run_script():
             }
             results.append(row_data)
 
+        # Printing Grabbed opportunities
+        print(results)
+        final_result = [
+            {   
+                "keyword": keyword,
+                "data": results                
+            }
+        ]
         # POST RESULTS
-        url = "https://n8n.srv988364.hstgr.cloud/webhook/e3ab4159-487e-44a8-9bd4-cfa949572f81"
-        response = requests.post(url, json=results)
+        url = "https://n8n.srv988364.hstgr.cloud/webhook/4439f790-db59-42da-acf0-453c8a7f9452"
+        response = requests.post(url, json=final_result)
 
         print(f"Status code: {response.status_code}")
         print("Response text:", response.text)
