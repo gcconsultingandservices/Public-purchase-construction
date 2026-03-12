@@ -79,7 +79,6 @@ def run_script():
                 "Title": title_text,
                 "Type": cells[4].text,
                 "Link": link,
-                "Trade": "construction"
             }
             results.append(row_data)
 
